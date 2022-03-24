@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 
-	v1 "dingtalk-ops/api/helloworld/v1"
-	"dingtalk-ops/internal/biz"
+	v1 "github.com/rogerogers/dingtalk-ops/api/helloworld/v1"
+	"github.com/rogerogers/dingtalk-ops/internal/biz"
 )
 
 // GreeterService is a greeter service.

@@ -3,8 +3,8 @@ package data
 import (
 	"context"
 
-	"dingtalk-ops/internal/biz"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/rogerogers/dingtalk-ops/internal/biz"
 )
 
 type greeterRepo struct {

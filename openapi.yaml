@@ -3,8 +3,7 @@
 
 openapi: 3.0.3
 info:
-    title: Greeter API
-    description: The greeting service definition.
+    title: ""
     version: 0.0.1
 paths:
     /helloworld/{name}:
@@ -25,14 +24,108 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/.helloworld.v1.HelloReply'
+                                $ref: '#/components/schemas/HelloReply'
+    /token-by-auth-code:
+        get:
+            tags:
+                - Dingtalk
+            operationId: Dingtalk_GetUserToken
+            parameters:
+                - name: authCode
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetUserTokenReply'
+    /unionid-by-userid:
+        get:
+            tags:
+                - Dingtalk
+            operationId: Dingtalk_GetUserIdByUnionId
+            parameters:
+                - name: unionId
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetUserIdByUnionIdReply'
+    /user-info-by-token:
+        get:
+            tags:
+                - Dingtalk
+            operationId: Dingtalk_GetUserInfoByToken
+            parameters:
+                - name: accessToken
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetUserInfoByTokenReply'
+    /user-info-by-userid:
+        get:
+            tags:
+                - Dingtalk
+            operationId: Dingtalk_GetUserInfoByUserId
+            parameters:
+                - name: userId
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetUserInfoByUserIdReply'
 components:
     schemas:
-        .helloworld.v1.HelloReply:
+        GetUserIdByUnionIdReply:
+            type: object
+            properties:
+                userId:
+                    type: string
+        GetUserInfoByTokenReply:
+            type: object
+            properties:
+                unionId:
+                    type: string
+        GetUserInfoByUserIdReply:
+            type: object
+            properties:
+                userInfo:
+                    type: string
+        GetUserTokenReply:
+            type: object
+            properties:
+                accessToken:
+                    type: string
+                refreshToken:
+                    type: string
+            description: The response message containing the get user token
+        HelloReply:
             type: object
             properties:
                 message:
                     type: string
             description: The response message containing the greetings
 tags:
+    - name: Dingtalk
+      description: The dingtalk service definition.
     - name: Greeter
+      description: The greeting service definition.

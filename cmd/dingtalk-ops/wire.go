@@ -1,3 +1,4 @@
+//go:build wireinject
 // +build wireinject
 
 // The build tag makes sure the stub is not built in the final build.
@@ -5,14 +6,14 @@
 package main
 
 import (
-	"dingtalk-ops/internal/biz"
-	"dingtalk-ops/internal/conf"
-	"dingtalk-ops/internal/data"
-	"dingtalk-ops/internal/server"
-	"dingtalk-ops/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
+	"github.com/rogerogers/dingtalk-ops/internal/biz"
+	"github.com/rogerogers/dingtalk-ops/internal/conf"
+	"github.com/rogerogers/dingtalk-ops/internal/data"
+	"github.com/rogerogers/dingtalk-ops/internal/server"
+	"github.com/rogerogers/dingtalk-ops/internal/service"
 )
 
 // wireApp init kratos application.

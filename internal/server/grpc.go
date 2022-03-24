@@ -1,12 +1,12 @@
 package server
 
 import (
-	v1 "dingtalk-ops/api/helloworld/v1"
-	"dingtalk-ops/internal/conf"
-	"dingtalk-ops/internal/service"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
+	v1 "github.com/rogerogers/dingtalk-ops/api/helloworld/v1"
+	"github.com/rogerogers/dingtalk-ops/internal/conf"
+	"github.com/rogerogers/dingtalk-ops/internal/service"
 )
 
 // NewGRPCServer new a gRPC server.
