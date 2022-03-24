@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package helloworld.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "dingtalk-ops/api/helloworld/v1;v1";
+option java_multiple_files = true;
+option java_package = "dev.kratos.api.helloworld.v1";
+option java_outer_classname = "HelloworldProtoV1";
+
+// The dingtalk service definition.
+service Dingtalk {
+  rpc GetUserToken(GetUserTokenRequest) returns (GetUserTokenReply) {
+    option (google.api.http) = {
+      get : "/token-by-auth-code"
+    };
+  }
+  rpc GetUserInfoByToken(GetUserInfoByTokenRequest)
+      returns (GetUserInfoByTokenReply) {
+    option (google.api.http) = {
+      get : "/user-info-by-token"
+    };
+  };
+
+  rpc GetUserIdByUnionId(GetUserIdByUnionIdRequest)
+      returns (GetUserIdByUnionIdReply) {
+    option (google.api.http) = {
+      get : "/unionid-by-userid"
+    };
+  };
+
+  rpc GetUserInfoByUserId(GetUserInfoByUserIdRequest)
+      returns (GetUserInfoByUserIdReply) {
+    option (google.api.http) = {
+      get : "/user-info-by-userid"
+    };
+  };
+}
+
+// The request message containing the auth_code
+message GetUserTokenRequest { string auth_code = 1; }
+
+// The response message containing the get user token
+message GetUserTokenReply {
+  string access_token = 1;
+  string refresh_token = 2;
+}
+
+message GetUserInfoByTokenRequest { string access_token = 1; }
+
+message GetUserInfoByTokenReply { string union_id = 1; }
+
+message GetUserIdByUnionIdRequest { string union_id = 1; }
+
+message GetUserIdByUnionIdReply { string user_id = 1; }
+
+message GetUserInfoByUserIdRequest { string user_id = 1; }
+
+message GetUserInfoByUserIdReply { string user_info = 1; }
