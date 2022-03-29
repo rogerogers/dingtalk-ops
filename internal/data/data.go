@@ -13,7 +13,8 @@ var ProviderSet = wire.NewSet(NewData, NewGreeterRepo, NewDingtalkRepo)
 // Data .
 type Data struct {
 	// TODO wrapped database client
-	Cache *redis.Client
+	Cache       *redis.Client
+	CacheConfig map[string]string
 }
 
 // NewData .
@@ -28,6 +29,7 @@ func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
 	})
 
 	return &Data{
-		Cache: rdb,
+		Cache:       rdb,
+		CacheConfig: map[string]string{"prefix": c.Redis.Prefix},
 	}, cleanup, nil
 }

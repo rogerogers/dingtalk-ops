@@ -66,7 +66,7 @@ func NewDingtalkRepo(data *Data, logger log.Logger) biz.DingtalkRepo {
 var cacheCtx = context.Background()
 
 func (r *dingtalkRepo) GetDingtalkToken() (string, error) {
-	key := "hibobi_ops:dingtalk-token"
+	key := fmt.Sprintf("%sdingtalk-token", r.data.CacheConfig["prefix"])
 	getValue, err := r.data.Cache.Get(cacheCtx, key).Result()
 	if err == redis.Nil {
 		token := GetAccessToken()

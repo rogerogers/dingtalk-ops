@@ -35,12 +35,13 @@ message Data {
     string addr = 2;
     google.protobuf.Duration read_timeout = 3;
     google.protobuf.Duration write_timeout = 4;
+    string prefix = 5;
   }
   Database database = 1;
   Redis redis = 2;
 }
 
-message Dingtalk{
+message Dingtalk {
   string key = 1;
   string secret = 2;
 }
