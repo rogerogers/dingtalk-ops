@@ -103,13 +103,13 @@ func GetUserInfoByToken(token string) *string {
 	return res.Body.UnionId
 }
 
-func GetUserIdByUnionId(unionid string) (userId string, err error) {
+func GetUserIdByUnionId(accessToken string, unionid string) (userId string, err error) {
 	requestBody, err := json.Marshal(map[string]string{"unionid": unionid})
 	if err != nil {
 		return "", err
 
 	}
-	res, err := http.Post(fmt.Sprintf("https://oapi.dingtalk.com/topapi/user/getbyunionid?access_token=%s", GetAccessToken()), "application/json", strings.NewReader(string(requestBody)))
+	res, err := http.Post(fmt.Sprintf("https://oapi.dingtalk.com/topapi/user/getbyunionid?access_token=%s", accessToken), "application/json", strings.NewReader(string(requestBody)))
 	if err != nil {
 		return "", err
 	}
@@ -122,12 +122,12 @@ func GetUserIdByUnionId(unionid string) (userId string, err error) {
 }
 
 //GetUserInfoByUserId 根据用户id获取用户信息
-func GetUserInfoByUserId(userId string) (userInfoRes *UserInfoResult, err error) {
+func GetUserInfoByUserId(accessToken string, userId string) (userInfoRes *UserInfoResult, err error) {
 	requestBody, err := json.Marshal(map[string]string{"userid": userId})
 	if err != nil {
 		return &UserInfoResult{}, err
 	}
-	res, err := http.Post(fmt.Sprintf("https://oapi.dingtalk.com/topapi/v2/user/get?access_token=%s", GetAccessToken()), "application/json", strings.NewReader(string(requestBody)))
+	res, err := http.Post(fmt.Sprintf("https://oapi.dingtalk.com/topapi/v2/user/get?access_token=%s", accessToken), "application/json", strings.NewReader(string(requestBody)))
 
 	if err != nil {
 		return &UserInfoResult{}, err
