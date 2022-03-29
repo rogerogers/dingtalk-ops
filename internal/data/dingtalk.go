@@ -6,6 +6,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	v1 "github.com/rogerogers/dingtalk-ops/api/helloworld/v1"
 	"github.com/rogerogers/dingtalk-ops/internal/biz"
+	"github.com/rogerogers/dingtalk-ops/pkg/dingtalk"
 )
 
 type dingtalkRepo struct {
@@ -22,10 +23,14 @@ func NewDingtalkRepo(data *Data, logger log.Logger) biz.DingtalkRepo {
 }
 
 func (r *dingtalkRepo) GetUserToken(ctx context.Context, d *v1.GetUserTokenRequest) (*v1.GetUserTokenReply, error) {
-	return &v1.GetUserTokenReply{
-		AccessToken:  "access_token",
-		RefreshToken: "refresh_token",
-	}, nil
+	result, err := dingtalk.GetUserToken(d.AuthCode)
+	if err != nil {
+		return &v1.GetUserTokenReply{}, err
+	} else {
+		return &v1.GetUserTokenReply{
+			AccessToken: result,
+		}, nil
+	}
 }
 
 func (r *dingtalkRepo) GetUserInfoByToken(ctx context.Context, d *v1.GetUserInfoByTokenRequest) (*v1.GetUserInfoByTokenReply, error) {
@@ -36,5 +41,10 @@ func (r *dingtalkRepo) GetUserIdByUnionId(ctx context.Context, d *v1.GetUserIdBy
 }
 
 func (r *dingtalkRepo) GetUserInfoByUserId(ctx context.Context, d *v1.GetUserInfoByUserIdRequest) (*v1.GetUserInfoByUserIdReply, error) {
-	return &v1.GetUserInfoByUserIdReply{}, nil
+	result, err := dingtalk.GetUserInfoByUserId(d.UserId)
+	if err != nil {
+		return &v1.GetUserInfoByUserIdReply{}, err
+	} else {
+		return &result.Result, nil
+	}
 }

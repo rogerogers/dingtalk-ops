@@ -24,3 +24,11 @@ func (s *DingtalkService) GetUserToken(ctx context.Context, in *v1.GetUserTokenR
 	}
 	return &v1.GetUserTokenReply{AccessToken: in.AuthCode, RefreshToken: g.RefreshToken}, nil
 }
+
+func (s *DingtalkService) GetUserInfoByUserId(ctx context.Context, in *v1.GetUserInfoByUserIdRequest) (*v1.GetUserInfoByUserIdReply, error) {
+	g, err := s.uc.GetUserInfoByUserId(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return g, nil
+}

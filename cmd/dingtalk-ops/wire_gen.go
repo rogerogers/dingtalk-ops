@@ -31,7 +31,7 @@ func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	dingtalkUseCase := biz.NewDingtalkUseCase(dingtalkRepo, logger)
 	dingtalkService := service.NewDingtalkService(dingtalkUseCase)
 	httpServer := server.NewHTTPServer(confServer, greeterService, dingtalkService, logger)
-	grpcServer := server.NewGRPCServer(confServer, greeterService, logger)
+	grpcServer := server.NewGRPCServer(confServer, greeterService, dingtalkService, logger)
 	app := newApp(logger, httpServer, grpcServer)
 	return app, func() {
 		cleanup()

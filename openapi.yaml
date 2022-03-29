@@ -6,6 +6,74 @@ info:
     title: ""
     version: 0.0.1
 paths:
+    /dingtalk/token-by-auth-code:
+        get:
+            tags:
+                - Dingtalk
+            operationId: Dingtalk_GetUserToken
+            parameters:
+                - name: authCode
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetUserTokenReply'
+    /dingtalk/unionid-by-userid:
+        get:
+            tags:
+                - Dingtalk
+            operationId: Dingtalk_GetUserIdByUnionId
+            parameters:
+                - name: unionId
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetUserIdByUnionIdReply'
+    /dingtalk/user-info-by-token:
+        get:
+            tags:
+                - Dingtalk
+            operationId: Dingtalk_GetUserInfoByToken
+            parameters:
+                - name: accessToken
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetUserInfoByTokenReply'
+    /dingtalk/user-info-by-userid:
+        get:
+            tags:
+                - Dingtalk
+            operationId: Dingtalk_GetUserInfoByUserId
+            parameters:
+                - name: userId
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetUserInfoByUserIdReply'
     /helloworld/{name}:
         get:
             tags:
@@ -25,74 +93,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HelloReply'
-    /token-by-auth-code:
-        get:
-            tags:
-                - Dingtalk
-            operationId: Dingtalk_GetUserToken
-            parameters:
-                - name: authCode
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/GetUserTokenReply'
-    /unionid-by-userid:
-        get:
-            tags:
-                - Dingtalk
-            operationId: Dingtalk_GetUserIdByUnionId
-            parameters:
-                - name: unionId
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/GetUserIdByUnionIdReply'
-    /user-info-by-token:
-        get:
-            tags:
-                - Dingtalk
-            operationId: Dingtalk_GetUserInfoByToken
-            parameters:
-                - name: accessToken
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/GetUserInfoByTokenReply'
-    /user-info-by-userid:
-        get:
-            tags:
-                - Dingtalk
-            operationId: Dingtalk_GetUserInfoByUserId
-            parameters:
-                - name: userId
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/GetUserInfoByUserIdReply'
 components:
     schemas:
         GetUserIdByUnionIdReply:
@@ -108,14 +108,20 @@ components:
         GetUserInfoByUserIdReply:
             type: object
             properties:
-                userInfo:
+                email:
+                    type: string
+                name:
+                    type: string
+                unionid:
+                    type: string
+                mobile:
                     type: string
         GetUserTokenReply:
             type: object
             properties:
-                accessToken:
+                access_token:
                     type: string
-                refreshToken:
+                refresh_token:
                     type: string
             description: The response message containing the get user token
         HelloReply:

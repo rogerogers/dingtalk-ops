@@ -13,27 +13,27 @@ option java_outer_classname = "HelloworldProtoV1";
 service Dingtalk {
   rpc GetUserToken(GetUserTokenRequest) returns (GetUserTokenReply) {
     option (google.api.http) = {
-      get : "/token-by-auth-code"
+      get : "/dingtalk/token-by-auth-code"
     };
   }
   rpc GetUserInfoByToken(GetUserInfoByTokenRequest)
       returns (GetUserInfoByTokenReply) {
     option (google.api.http) = {
-      get : "/user-info-by-token"
+      get : "/dingtalk/user-info-by-token"
     };
   };
 
   rpc GetUserIdByUnionId(GetUserIdByUnionIdRequest)
       returns (GetUserIdByUnionIdReply) {
     option (google.api.http) = {
-      get : "/unionid-by-userid"
+      get : "/dingtalk/unionid-by-userid"
     };
   };
 
   rpc GetUserInfoByUserId(GetUserInfoByUserIdRequest)
       returns (GetUserInfoByUserIdReply) {
     option (google.api.http) = {
-      get : "/user-info-by-userid"
+      get : "/dingtalk/user-info-by-userid"
     };
   };
 }
@@ -43,8 +43,8 @@ message GetUserTokenRequest { string auth_code = 1; }
 
 // The response message containing the get user token
 message GetUserTokenReply {
-  string access_token = 1;
-  string refresh_token = 2;
+  string access_token = 1 [ json_name = "access_token" ];
+  string refresh_token = 2 [ json_name = "refresh_token" ];
 }
 
 message GetUserInfoByTokenRequest { string access_token = 1; }
@@ -57,4 +57,9 @@ message GetUserIdByUnionIdReply { string user_id = 1; }
 
 message GetUserInfoByUserIdRequest { string user_id = 1; }
 
-message GetUserInfoByUserIdReply { string user_info = 1; }
+message GetUserInfoByUserIdReply {
+  string email = 1;
+  string name = 2;
+  string unionid = 3;
+  string mobile = 4;
+}

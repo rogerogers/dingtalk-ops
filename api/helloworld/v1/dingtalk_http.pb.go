@@ -26,10 +26,10 @@ type DingtalkHTTPServer interface {
 
 func RegisterDingtalkHTTPServer(s *http.Server, srv DingtalkHTTPServer) {
 	r := s.Route("/")
-	r.GET("/token-by-auth-code", _Dingtalk_GetUserToken0_HTTP_Handler(srv))
-	r.GET("/user-info-by-token", _Dingtalk_GetUserInfoByToken0_HTTP_Handler(srv))
-	r.GET("/unionid-by-userid", _Dingtalk_GetUserIdByUnionId0_HTTP_Handler(srv))
-	r.GET("/user-info-by-userid", _Dingtalk_GetUserInfoByUserId0_HTTP_Handler(srv))
+	r.GET("/dingtalk/token-by-auth-code", _Dingtalk_GetUserToken0_HTTP_Handler(srv))
+	r.GET("/dingtalk/user-info-by-token", _Dingtalk_GetUserInfoByToken0_HTTP_Handler(srv))
+	r.GET("/dingtalk/unionid-by-userid", _Dingtalk_GetUserIdByUnionId0_HTTP_Handler(srv))
+	r.GET("/dingtalk/user-info-by-userid", _Dingtalk_GetUserInfoByUserId0_HTTP_Handler(srv))
 }
 
 func _Dingtalk_GetUserToken0_HTTP_Handler(srv DingtalkHTTPServer) func(ctx http.Context) error {
@@ -125,7 +125,7 @@ func NewDingtalkHTTPClient(client *http.Client) DingtalkHTTPClient {
 
 func (c *DingtalkHTTPClientImpl) GetUserIdByUnionId(ctx context.Context, in *GetUserIdByUnionIdRequest, opts ...http.CallOption) (*GetUserIdByUnionIdReply, error) {
 	var out GetUserIdByUnionIdReply
-	pattern := "/unionid-by-userid"
+	pattern := "/dingtalk/unionid-by-userid"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/helloworld.v1.Dingtalk/GetUserIdByUnionId"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -138,7 +138,7 @@ func (c *DingtalkHTTPClientImpl) GetUserIdByUnionId(ctx context.Context, in *Get
 
 func (c *DingtalkHTTPClientImpl) GetUserInfoByToken(ctx context.Context, in *GetUserInfoByTokenRequest, opts ...http.CallOption) (*GetUserInfoByTokenReply, error) {
 	var out GetUserInfoByTokenReply
-	pattern := "/user-info-by-token"
+	pattern := "/dingtalk/user-info-by-token"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/helloworld.v1.Dingtalk/GetUserInfoByToken"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -151,7 +151,7 @@ func (c *DingtalkHTTPClientImpl) GetUserInfoByToken(ctx context.Context, in *Get
 
 func (c *DingtalkHTTPClientImpl) GetUserInfoByUserId(ctx context.Context, in *GetUserInfoByUserIdRequest, opts ...http.CallOption) (*GetUserInfoByUserIdReply, error) {
 	var out GetUserInfoByUserIdReply
-	pattern := "/user-info-by-userid"
+	pattern := "/dingtalk/user-info-by-userid"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/helloworld.v1.Dingtalk/GetUserInfoByUserId"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -164,7 +164,7 @@ func (c *DingtalkHTTPClientImpl) GetUserInfoByUserId(ctx context.Context, in *Ge
 
 func (c *DingtalkHTTPClientImpl) GetUserToken(ctx context.Context, in *GetUserTokenRequest, opts ...http.CallOption) (*GetUserTokenReply, error) {
 	var out GetUserTokenReply
-	pattern := "/token-by-auth-code"
+	pattern := "/dingtalk/token-by-auth-code"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/helloworld.v1.Dingtalk/GetUserToken"))
 	opts = append(opts, http.PathTemplate(pattern))

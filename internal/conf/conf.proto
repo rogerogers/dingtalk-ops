@@ -39,3 +39,8 @@ message Data {
   Database database = 1;
   Redis redis = 2;
 }
+
+message Dingtalk{
+  string key = 1;
+  string secret = 2;
+}
