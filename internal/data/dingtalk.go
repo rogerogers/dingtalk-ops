@@ -21,6 +21,7 @@ import (
 	"github.com/go-redis/redis/v8"
 	v1 "github.com/rogerogers/dingtalk-ops/api/helloworld/v1"
 	"github.com/rogerogers/dingtalk-ops/internal/biz"
+	"github.com/rogerogers/dingtalk-ops/internal/conf"
 )
 
 var (
@@ -79,8 +80,24 @@ func (r *dingtalkRepo) GetDingtalkToken() (string, error) {
 	}
 }
 
+//GetUserToken 获取用户token
+func GetUserToken(code string, ding *conf.Dingtalk) (token string, err error) {
+	getUserTokenRequest := oauth2_1_0.GetUserTokenRequest{
+		ClientId:     tea.String(ding.Key),
+		ClientSecret: tea.String(ding.Secret),
+		Code:         tea.String(code),
+		GrantType:    tea.String("authorization_code"),
+	}
+	result, err := client.GetUserToken(&getUserTokenRequest)
+	if err != nil {
+		return "", err
+	} else {
+		return *result.Body.AccessToken, nil
+	}
+}
+
 func (r *dingtalkRepo) GetUserToken(ctx context.Context, d *v1.GetUserTokenRequest) (*v1.GetUserTokenReply, error) {
-	result, err := GetUserToken(d.AuthCode)
+	result, err := GetUserToken(d.AuthCode, r.data.DingtalkConfig)
 	if err != nil {
 		return &v1.GetUserTokenReply{}, err
 	} else {
@@ -124,22 +141,6 @@ func GetAccessToken() (token string) {
 	return token
 }
 
-//GetUserToken 获取用户token
-func GetUserToken(code string) (token string, err error) {
-	getUserTokenRequest := oauth2_1_0.GetUserTokenRequest{
-		ClientId:     tea.String(os.Getenv("DING_KEY")),
-		ClientSecret: tea.String(os.Getenv("DING_SECRET")),
-		Code:         tea.String(code),
-		GrantType:    tea.String("authorization_code"),
-	}
-	result, err := client.GetUserToken(&getUserTokenRequest)
-	if err != nil {
-		return "", err
-	} else {
-		return *result.Body.AccessToken, nil
-	}
-}
-
 func GetUserInfoByToken(token string) *string {
 	header := contact_1_0.GetUserHeaders{
 		XAcsDingtalkAccessToken: &token,
@@ -153,7 +154,11 @@ func GetUserInfoByToken(token string) *string {
 }
 
 func (r *dingtalkRepo) GetUserInfoByToken(ctx context.Context, d *v1.GetUserInfoByTokenRequest) (*v1.GetUserInfoByTokenReply, error) {
-	return &v1.GetUserInfoByTokenReply{}, nil
+	unionId := GetUserInfoByToken(d.AccessToken)
+
+	return &v1.GetUserInfoByTokenReply{
+		UnionId: *unionId,
+	}, nil
 }
 
 func GetUserIdByUnionId(accessToken string, unionid string) (userId string, err error) {
@@ -171,11 +176,21 @@ func GetUserIdByUnionId(accessToken string, unionid string) (userId string, err 
 		return "", err
 	}
 	return string(resBody), nil
-
 }
 
 func (r *dingtalkRepo) GetUserIdByUnionId(ctx context.Context, d *v1.GetUserIdByUnionIdRequest) (*v1.GetUserIdByUnionIdReply, error) {
-	return &v1.GetUserIdByUnionIdReply{}, nil
+	token, err := r.GetDingtalkToken()
+	if err != nil {
+		r.log.Error(err)
+	}
+	userId, err := GetUserIdByUnionId(token, d.UnionId)
+
+	if err != nil {
+		r.log.Error(err)
+	}
+	return &v1.GetUserIdByUnionIdReply{
+		UserId: userId,
+	}, nil
 }
 
 func GetUserInfoByUserId(accessToken string, userId string) (userInfoRes *UserInfoResult, err error) {

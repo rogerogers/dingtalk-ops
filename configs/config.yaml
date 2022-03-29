@@ -16,5 +16,5 @@ data:
     prefix: "dingtalk-ops:"
 
 dingtalk:
-  key:
-  secret:
+  key: key
+  secret: secret
