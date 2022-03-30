@@ -116,6 +116,10 @@ components:
                     type: string
                 mobile:
                     type: string
+                avatar:
+                    type: string
+                title:
+                    type: string
         GetUserTokenReply:
             type: object
             properties:

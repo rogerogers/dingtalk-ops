@@ -62,4 +62,6 @@ message GetUserInfoByUserIdReply {
   string name = 2;
   string unionid = 3;
   string mobile = 4;
+  string avatar = 5;
+  string title = 6;
 }
