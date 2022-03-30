@@ -99,7 +99,6 @@ func GetUserToken(code string, ding *conf.Dingtalk) (token string, err error) {
 
 func (r *dingtalkRepo) GetUserToken(ctx context.Context, d *v1.GetUserTokenRequest) (*v1.GetUserTokenReply, error) {
 	result, err := GetUserToken(d.AuthCode, r.data.DingtalkConfig)
-	fmt.Println(result)
 	if err != nil {
 		return &v1.GetUserTokenReply{}, err
 	} else {
@@ -149,7 +148,6 @@ func GetUserInfoByToken(token string) (*string, error) {
 	}
 	unionId := "me"
 	res, err := contactClient.GetUserWithOptions(&unionId, &header, &util.RuntimeOptions{})
-	fmt.Println(err, res, token)
 	if err != nil {
 		return &unionId, errors.New(400, "PARAM_ERROR", "param error")
 	}
