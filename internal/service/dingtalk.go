@@ -22,7 +22,22 @@ func (s *DingtalkService) GetUserToken(ctx context.Context, in *v1.GetUserTokenR
 	if err != nil {
 		return nil, err
 	}
-	return &v1.GetUserTokenReply{AccessToken: in.AuthCode, RefreshToken: g.RefreshToken}, nil
+	return g, nil
+}
+
+func (s *DingtalkService) GetUserInfoByToken(ctx context.Context, in *v1.GetUserInfoByTokenRequest) (*v1.GetUserInfoByTokenReply, error) {
+	g, err := s.uc.GetUserInfoByToken(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return g, nil
+}
+func (s *DingtalkService) GetUserIdByUnionId(ctx context.Context, in *v1.GetUserIdByUnionIdRequest) (*v1.GetUserIdByUnionIdReply, error) {
+	g, err := s.uc.GetUserIdByUnionId(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return g, nil
 }
 
 func (s *DingtalkService) GetUserInfoByUserId(ctx context.Context, in *v1.GetUserInfoByUserIdRequest) (*v1.GetUserInfoByUserIdReply, error) {

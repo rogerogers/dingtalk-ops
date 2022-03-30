@@ -99,6 +99,7 @@ func GetUserToken(code string, ding *conf.Dingtalk) (token string, err error) {
 
 func (r *dingtalkRepo) GetUserToken(ctx context.Context, d *v1.GetUserTokenRequest) (*v1.GetUserTokenReply, error) {
 	result, err := GetUserToken(d.AuthCode, r.data.DingtalkConfig)
+	fmt.Println(result)
 	if err != nil {
 		return &v1.GetUserTokenReply{}, err
 	} else {
@@ -148,6 +149,7 @@ func GetUserInfoByToken(token string) (*string, error) {
 	}
 	unionId := "me"
 	res, err := contactClient.GetUserWithOptions(&unionId, &header, &util.RuntimeOptions{})
+	fmt.Println(err, res, token)
 	if err != nil {
 		return &unionId, errors.New(400, "PARAM_ERROR", "param error")
 	}
@@ -168,16 +170,16 @@ func (r *dingtalkRepo) GetUserInfoByToken(ctx context.Context, d *v1.GetUserInfo
 func GetUserIdByUnionId(accessToken string, unionid string) (userId string, err error) {
 	requestBody, err := json.Marshal(map[string]string{"unionid": unionid})
 	if err != nil {
-		return "", err
+		return "", errors.New(400, "PARAM_ERROR", "param error")
 
 	}
 	res, err := http.Post(fmt.Sprintf("https://oapi.dingtalk.com/topapi/user/getbyunionid?access_token=%s", accessToken), "application/json", strings.NewReader(string(requestBody)))
 	if err != nil {
-		return "", err
+		return "", errors.New(400, "PARAM_ERROR", "param error")
 	}
 	resBody, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", err
+		return "", errors.New(400, "PARAM_ERROR", "param error")
 	}
 	return string(resBody), nil
 }
@@ -185,12 +187,12 @@ func GetUserIdByUnionId(accessToken string, unionid string) (userId string, err 
 func (r *dingtalkRepo) GetUserIdByUnionId(ctx context.Context, d *v1.GetUserIdByUnionIdRequest) (*v1.GetUserIdByUnionIdReply, error) {
 	token, err := r.GetDingtalkToken()
 	if err != nil {
-		r.log.Error(err)
+		return &v1.GetUserIdByUnionIdReply{}, err
 	}
 	userId, err := GetUserIdByUnionId(token, d.UnionId)
 
 	if err != nil {
-		r.log.Error(err)
+		return &v1.GetUserIdByUnionIdReply{}, err
 	}
 	return &v1.GetUserIdByUnionIdReply{
 		UserId: userId,
@@ -222,7 +224,7 @@ func GetUserInfoByUserId(accessToken string, userId string) (userInfoRes *UserIn
 func (r *dingtalkRepo) GetUserInfoByUserId(ctx context.Context, d *v1.GetUserInfoByUserIdRequest) (*v1.GetUserInfoByUserIdReply, error) {
 	token, err := r.GetDingtalkToken()
 	if err != nil {
-		r.log.Error(err, "fuck")
+		return &v1.GetUserInfoByUserIdReply{}, err
 	}
 	result, err := GetUserInfoByUserId(token, d.UserId)
 	if err != nil {
